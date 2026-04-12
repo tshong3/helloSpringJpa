@@ -4,6 +4,7 @@ import kr.ac.hansung.cse.model.Category;
 import kr.ac.hansung.cse.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import kr.ac.hansung.cse.exception.DuplicateCategoryException;
 
 import java.util.List;
 
@@ -22,6 +23,15 @@ public class CategoryService {
 
     @Transactional
     public Category createCategory(String name) {
+
+        // 중복 검사
+        categoryRepository.findByName(name)
+                .ifPresent(c -> {
+                    throw new DuplicateCategoryException(name);
+                });
+
         return categoryRepository.save(new Category(name));
     }
+
+
 }
