@@ -6,6 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import kr.ac.hansung.cse.model.CategoryForm;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/categories")
@@ -27,5 +32,22 @@ public class CategoryController {
     public String showCreateForm(Model model) {
         model.addAttribute("categoryForm", new CategoryForm());
         return "categoryForm";
+    }
+
+    @PostMapping("/create")
+    public String createCategory(
+            @Valid @ModelAttribute CategoryForm categoryForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+
+        // 입력 검증 실패
+        if (bindingResult.hasErrors()) {
+            return "categoryForm";
+        }
+
+        categoryService.createCategory(categoryForm.getName());
+        redirectAttributes.addFlashAttribute("successMessage", "등록 완료");
+
+        return "redirect:/categories";
     }
 }
