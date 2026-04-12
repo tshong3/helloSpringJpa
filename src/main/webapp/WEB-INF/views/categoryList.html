@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>카테고리 목록</title>
+</head>
+<body>
+
+<h2>카테고리 목록</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>이름</th>
+    </tr>
+
+    <tr th:each="cat : ${categories}">
+        <td th:text="${cat.id}"></td>
+        <td th:text="${cat.name}"></td>
+    </tr>
+</table>
+
+</body>
+</html>
