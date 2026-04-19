@@ -34,7 +34,23 @@
     </style>
 </head>
 <body>
+<form th:action="@{/products}" method="get">
 
+    <input type="text" name="keyword"
+           th:value="${keyword}"
+           placeholder="상품명 검색"/>
+
+    <select name="categoryId">
+        <option value="">-- 전체 카테고리 --</option>
+        <option th:each="cat : ${categories}"
+                th:value="${cat.id}"
+                th:text="${cat.name}"
+                th:selected="${cat.id == categoryId}">
+        </option>
+    </select>
+
+    <button type="submit">검색</button>
+</form>
     <h1>상품 목록</h1>
 
     <!--
@@ -119,6 +135,7 @@
             </tr>
         </tbody>
     </table>
+<p th:if="${#lists.isEmpty(products)}">검색 결과가 없습니다.</p>
     <footer>
         <p th:text="${'실습 수행: ' + #temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss')} + ' |  학번: 2371080  |  이름: 홍태성'"></p>
     </footer>
